@@ -1,5 +1,12 @@
 # DownUnderCTF 2022 - Yak Things
 
+## Table of Contents
+ * [Solve Me](#solve-me)
+ * [Secret and Ephemeral](#secret-and-ephemeral)
+ * [Crypto Casino](#crypto-casino)
+ * [Private Log](#private-log)
+ * [EVM Vault Mechanism](#evm-vault-mechanism)
+
 ## Solve Me
 
 ![Solve Me](photos/1.png)
@@ -325,6 +332,8 @@ contract PrivateLog is Initializable {
 Ironically, this challenge has 1 less solve than `EVM Vault Mechanism`, which was considerably harder. I guess people really hate proxies :)
 
 The first vulnerability resides in the `updateLogEntry` function: `logIndex` is not checked. The function can therefore write (almost) arbitrary data at any storage slot, since the storage slot address is calculated by adding `logIndex` to `;sha3(logEntries.slot)`. Note that this is Solidity assembly, so overflows do not cause any error.
+
+Note: `createLogEntry` also has the same vulnerability - I guess you could also exploit it.
 
 The first question is how this can be exploited. Well, TransparentUpgradableProxies use the same 'storage' as the contract they point to. There are some well-defined slots where they store data such as the proxy admin. For this challenge, I wrote to the implementation slot, which tells the proxy which contract to delegate its calls to.
 
