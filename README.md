@@ -452,4 +452,4 @@ If you've read the code above, you might ask yourself where I got the password f
 
 ## EVM Vault Mechanism
 
-Blog post about this challenge can be found [here](https://blog.kuhi.to/downunderctf-2022-evm-vault-mechanism);
+Blog post about this challenge can be found [here](https://blog.kuhi.to/downunderctf-2022-evm-vault-mechanism).
