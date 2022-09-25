@@ -1,0 +1,27 @@
+import sha3
+
+i = 0xffffff1234576c00000000000000000000000000000000000000000000000000
+code = "608060405260007fffffff1234576c00000000000000000000000000000000000000000000000042905060007f4343434331333337000000000000000000000000000000000000000000000000905060008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690508262abcdef558160075260006013600860076000856402540be400f1915050505000fea2646970667358221220417f73f2fb058cd0fb4cd680035cdc4f3c94848c7990a64414a8127d477fbbc064736f6c634300080c0033"
+code = bytes.fromhex(code)
+replaceMe = bytes.fromhex("ffffff1234576c00000000000000000000000000000000000000000000000042")
+
+def check(i):
+	b = bytes.fromhex(hex(i)[2:])
+	k = sha3.keccak_256()
+	newCode = code.replace(replaceMe, b)
+	k.update(newCode)
+	if (int(k.hexdigest(), 16) & 0xFF000000) >> 0x18 == 205:
+		print(newCode.hex())
+		print(int(k.hexdigest(), 16))
+		return True
+	return False
+
+
+while True:
+	if check(i):
+		print("FOUND ID")
+		print(hex(i))
+		break
+	elif i % 0xfffff == 0:
+		print(hex(i))
+	i += 1
